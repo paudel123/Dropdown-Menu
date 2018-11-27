@@ -1,6 +1,6 @@
 <?php
 $id = $_POST["id"];
-$val = $_POST["valtxt"];
+$val = $_POST["valtxt"]; 
 
 $id = explode(".",$id);
 $id = $id[0];
