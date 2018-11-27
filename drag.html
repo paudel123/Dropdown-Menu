@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Drop down menu with jQuery drag drop option</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+  #drag1, #drag2{
+    border: 1px solid #eee;
+    width: 142px;
+    min-height: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+    float: left;
+    margin-right: 10px;
+  }
+  
+  #drag1 li, #drag2 li{
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    width: 120px;
+    cursor:pointer;
+  }
+
+  #drag1 li ul, #drag2 li ul{
+    display: none;
+  }
+
+  #drag1 li:hover ul, #drag2 li:hover ul{
+    display: block;
+  }
+
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $(function(){
+    $( "li ul" ).sortable({
+      connectWith: ".commonDrag",
+      update: function (event, ui) {
+        var id = ui.item.prop("id");
+        var valtxt = ui.item.html();
+        // POST to server using $.post or $.ajax
+        $.ajax({
+            data: {
+              id:id,
+              valtxt:valtxt
+            },
+            type: 'POST',
+            url: 'update.php',
+            dataType: 'text',
+            success: function (response) {
+            //alert(response) 
+            if (response)
+              var res = response.split('#')
+              $("#title").html(res[0]);
+              $("#image").html(res[1]);
+          }
+        });
+    }
+    })
+  });
+  </script>
+</head>
+<body>
+
+<ul id="drag1">
+  <li id="1">Menu A
+	<ul class="commonDrag">
+		<li id="1.1">Item A1</li>
+		<li id="1.2">Item A2</li>
+		<li id="1.3">Item A3</li>
+	</ul>
+  </li>
+</ul>
+
+<ul id="drag2">
+  <li id="2">Menu B
+	<ul class="commonDrag">
+		<li id="2.1">Item B1</li>
+		<li id="2.2">Item B2</li>
+		<li id="2.3">Item B3</li>
+	</ul>
+  </li>
+</ul>
+
+<div style="width:90%; padding:10px; float:left; text-align:left;">
+<h1 id="title"></h1>
+<div id="image"></div>
+</div>
+ 
+</body>
+</html>
